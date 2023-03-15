@@ -1,23 +1,12 @@
-import { useState } from "react";
-import socket from "../lib/socket";
+import { FormEvent, useState } from "react";
+import { createUser, logIn } from "../actions";
 import { useUserStore } from "../stores/users";
-import { getRoute } from "../utils/get-route";
 
 function UserCreator() {
   const [name, setName] = useState("");
 
-  const createUser = (name: string) => {
-    fetch(getRoute("/users"), {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name }),
-    });
-    socket.emit("");
-  };
-
-  const handleSubmit = () => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (!name) return;
     createUser(name);
   };
@@ -40,7 +29,9 @@ function UserSelector() {
   return (
     <select name="" id="">
       {users.map((u) => (
-        <option key={u.id}>{u.username}</option>
+        <option key={u.id} onClick={() => logIn(u.id)}>
+          {u.username}
+        </option>
       ))}
     </select>
   );
