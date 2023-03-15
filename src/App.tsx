@@ -1,22 +1,37 @@
 import { useEffect } from "react";
+import { logIn } from "./actions";
 import Auth from "./components/Auth";
 import Chat from "./components/Chat";
 import socket from "./lib/socket";
 import { User, useUserStore } from "./stores/users";
 
 function App() {
-  const { activeUserId, addUser, setUsers } = useUserStore();
+  const [activeUserId, setActiveUserId, addUser, setUsers] = useUserStore(
+    (state) => [
+      state.activeUserId,
+      state.setActiveUserId,
+      state.addUser,
+      state.setUsers,
+    ]
+  );
 
   useEffect(() => {
+    const storedUserId = window.localStorage.getItem("activeUserId");
+    if (storedUserId != null && storedUserId !== "") {
+      logIn(storedUserId);
+      setActiveUserId(storedUserId);
+    }
+
+    socket.emit("usersFetch");
+
     const onUsersFetch = (users: User[]) => setUsers(users);
     const onUserCreate = (user: User) => addUser(user);
 
-    socket.emit("fetchUsers");
-    socket.on("fetchUsers", onUsersFetch);
+    socket.on("usersFetch", onUsersFetch);
     socket.on("userCreate", onUserCreate);
 
     return () => {
-      socket.off("fetchUsers", onUsersFetch);
+      socket.off("usersFetch", onUsersFetch);
       socket.off("userCreate", onUserCreate);
     };
   }, []);

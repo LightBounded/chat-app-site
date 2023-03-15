@@ -24,12 +24,21 @@ function UserCreator() {
 }
 
 function UserSelector() {
-  const { users } = useUserStore();
+  const [users, setActiveUserId] = useUserStore((state) => [
+    state.users,
+    state.setActiveUserId,
+  ]);
 
   return (
-    <select name="" id="">
+    <select
+      onChange={(e) => {
+        logIn(e.target.value);
+        setActiveUserId(e.target.value);
+      }}
+    >
+      <option>Pick a user</option>
       {users.map((u) => (
-        <option key={u.id} onClick={() => logIn(u.id)}>
+        <option key={u.id} value={u.id}>
           {u.username}
         </option>
       ))}
