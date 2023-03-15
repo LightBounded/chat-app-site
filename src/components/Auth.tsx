@@ -33,7 +33,6 @@ function UserSelector() {
     <select
       onChange={(e) => {
         logIn(e.target.value);
-        setActiveUserId(e.target.value);
       }}
     >
       <option>Pick a user</option>

@@ -16,11 +16,10 @@ function App() {
   );
 
   useEffect(() => {
+    socket.connect();
+
     const storedUserId = window.localStorage.getItem("activeUserId");
-    if (storedUserId != null && storedUserId !== "") {
-      logIn(storedUserId);
-      setActiveUserId(storedUserId);
-    }
+    if (storedUserId !== null && storedUserId !== "") logIn(storedUserId);
 
     socket.emit("usersFetch");
 
@@ -32,7 +31,8 @@ function App() {
 
     return () => {
       socket.off("usersFetch", onUsersFetch);
-      socket.off("userCreate", onUserCreate);
+      socket.off("userCreate", onUserCreate); 
+      socket.disconnect();
     };
   }, []);
 

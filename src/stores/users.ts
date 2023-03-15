@@ -1,18 +1,18 @@
 import { create } from "zustand";
 
-export interface User {
+export type User = {
   id: string;
   username: string;
   isOnline: boolean;
-}
+};
 
-interface UserState {
+type UserState = {
   users: User[];
   activeUserId: string | null;
   setActiveUserId: (id: string) => void;
   setUsers: (users: User[]) => void;
   addUser: (newUser: User) => void;
-}
+};
 
 export const useUserStore = create<UserState>((set) => ({
   users: [],
