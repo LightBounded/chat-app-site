@@ -4,7 +4,7 @@ export type Message = {
   id: string;
   channelId: string;
   userId: string;
-  message: string;
+  text: string;
 };
 
 type MessageState = {
