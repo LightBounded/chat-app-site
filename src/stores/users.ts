@@ -19,6 +19,8 @@ export const useUserStore = create<UserState>((set) => ({
   activeUserId: null,
   setActiveUserId: (id) => set({ activeUserId: id }),
   setUsers: (users) => set({ users }),
-  createUser: (newUser) =>
-    set((state) => ({ users: [...state.users, newUser] })),
+  createUser: (newUser) => {
+    console.log("this is running");
+    set((state) => ({ users: [...state.users, newUser] }));
+  },
 }));

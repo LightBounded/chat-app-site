@@ -17,14 +17,12 @@ function App() {
   const createMessage = useMessageStore((state) => state.createMessage);
 
   useEffect(() => {
-    socket.connect();
-
     const storedUserId = window.localStorage.getItem("activeUserId");
     if (storedUserId !== null && storedUserId !== "") logIn(storedUserId);
 
     socket.emit("usersFetch");
     socket.emit("channelsFetch");
-    socket.emit("messagesFetch")
+    socket.emit("messagesFetch");
 
     const onUsersFetch = (users: User[]) => setUsers(users);
     const onUserCreate = (user: User) => createUser(user);
@@ -46,15 +44,13 @@ function App() {
 
     return () => {
       socket.off("usersFetch", onUsersFetch);
-      socket.off("usersCreate", onUserCreate);
+      socket.off("userCreate", onUserCreate);
 
       socket.off("channelsFetch", onChannelsFetch);
       socket.off("channelCreate", onChannelCreate);
 
       socket.off("messagesFetch", onMessagesFetch);
       socket.off("messageCreate", onMessageCreate);
-
-      socket.disconnect();
     };
   }, []);
 

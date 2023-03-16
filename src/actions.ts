@@ -12,9 +12,3 @@ export const logOut = (userId: string) => {
   useUserStore.setState({ activeUserId: null });
   window.localStorage.removeItem("activeUserId");
 };
-
-export const createUser = (username: string) => {
-};
-
-export const createChannel = (channelName: string) => {
-};
