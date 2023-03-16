@@ -1,21 +1,22 @@
 import { FormEvent, useState } from "react";
-import { createUser, logIn } from "../actions";
+import { logIn } from "../actions";
+import socket from "../lib/socket";
 import { useUserStore } from "../stores/users";
 
 function UserCreator() {
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!name) return;
-    createUser(name);
+    if (!username) return;
+    socket.emit("userCreate", username);
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <input
-        value={name}
-        onChange={(e) => setName(e.target.value)}
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
         type="text"
         placeholder="Enter a username"
       />
@@ -24,10 +25,7 @@ function UserCreator() {
 }
 
 function UserSelector() {
-  const [users, setActiveUserId] = useUserStore((state) => [
-    state.users,
-    state.setActiveUserId,
-  ]);
+  const users = useUserStore((state) => state.users);
 
   return (
     <select

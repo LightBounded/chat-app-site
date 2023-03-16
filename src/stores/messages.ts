@@ -9,11 +9,13 @@ export type Message = {
 
 type MessageState = {
   messages: Message[];
-  addMessage: (message: Message) => void;
+  createMessage: (message: Message) => void;
+  setMessages: (messages: Message[]) => void;
 };
 
 export const useMessageStore = create<MessageState>((set) => ({
   messages: [],
-  addMessage: (newMessage) =>
+  createMessage: (newMessage) =>
     set((state) => ({ messages: [...state.messages, newMessage] })),
+  setMessages: (messages) => set({ messages }),
 }));
